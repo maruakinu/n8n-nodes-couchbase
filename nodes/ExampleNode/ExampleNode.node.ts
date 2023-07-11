@@ -6,51 +6,267 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 
+import {
+    Bucket,
+    Collection,
+    connect,
+  } from 'couchbase'
+
 export class ExampleNode implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Example Node',
-		name: 'exampleNode',
+		displayName: 'Couchbase',
+		name: 'couchbaseDB',
+		icon: 'file:CBLogomark.svg',
 		group: ['transform'],
 		version: 1,
 		description: 'Basic Example Node',
 		defaults: {
-			name: 'Example Node',
+			name: 'Couchbase',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
 		properties: [
-			// Node properties which the user gets displayed and
-			// can change on the node.
 			{
-				displayName: 'My String',
-				name: 'myString',
+                displayName: 'Operation',
+                name: 'operation',
+                type: 'options',
+                noDataExpression: true,
+                options: [
+                    {
+                        name: 'Insert',
+                        value: 'insert',
+                        description: 'Insert document in couchbase',
+                        action: 'Insert document in couchbase',
+                    },
+					{
+						name: 'Update',
+						value: 'update',
+						description: 'Update document in couchbase',
+						action: 'Update document in couchbase',
+					},
+					{
+						name: 'Remove',
+						value: 'remove',
+						description: 'Remove document in couchbase',
+						action: 'Remove document in couchbase',
+					},
+                ],
+                default: 'insert',
+            },
+
+			// ----------------------------------
+			//         credentials
+			// ----------------------------------
+			{
+				displayName: 'Username',
+				name: 'myUsername',
 				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['insert', 'update', 'remove'],
+					},
+				},
+				default: '',
+				placeholder: 'Enter Your Username',
+				description: 'The description text',
+			},
+
+			{
+				displayName: 'Password',
+				name: 'myPassword',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['insert', 'update', 'remove'],
+					},
+				},
+				default: '',
+				placeholder: 'Enter Your Password',
+				description: 'The description text',
+			},
+
+			{
+				displayName: 'Bucket',
+				name: 'myBucket',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['insert', 'update', 'remove'],
+					},
+				},
+				default: '',
+				placeholder: 'Enter Bucket Name',
+				description: 'The description text',
+			},
+
+			{
+				displayName: 'Scope',
+				name: 'myScope',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['insert', 'update', 'remove'],
+					},
+				},
+				default: '',
+				placeholder: 'Enter Scope Name',
+				description: 'The description text',
+			},
+
+			{
+				displayName: 'Colection',
+				name: 'myCollection',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['insert', 'update', 'remove'],
+					},
+				},
+				default: '',
+				placeholder: 'Enter Collection Name',
+				description: 'The description text',
+			},
+
+
+			// ----------------------------------
+			//         insert
+			// ----------------------------------
+			{
+				displayName: 'Value',
+				name: 'myDocument',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['insert'],
+					},
+				},
 				default: '',
 				placeholder: 'Placeholder value',
 				description: 'The description text',
 			},
+
+
+
+			// ----------------------------------
+			//         update
+			// ----------------------------------
+			{
+				displayName: 'ID',
+				name: 'myDocument',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['update'],
+					},
+				},
+				default: '',
+				placeholder: 'Placeholder value',
+				description: 'The description text',
+			},
+			{
+				displayName: 'Value',
+				name: 'myValue',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['update'],
+					},
+				},
+				default: '',
+				placeholder: 'Placeholder value',
+				description: 'The description text',
+			},
+
+			// ----------------------------------
+			//         delete
+			// ----------------------------------
+			{
+				displayName: 'ID',
+				name: 'myDocument',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['remove'],
+					},
+				},
+				default: '',
+				placeholder: 'Placeholder value',
+				description: 'The description text',
+			},
+
+
+
 		],
 	};
 
-	// The function below is responsible for actually doing whatever this node
-	// is supposed to do. In this case, we're just appending the `myString` property
-	// with whatever the user has entered.
-	// You can make async calls and use `await`.
+
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 
 		let item: INodeExecutionData;
-		let myString: string;
+		let item2: INodeExecutionData;
+		let myDocument: string;
+		let myNewValue: string;
+		let myUsername: string;
+		let myPassword: string;
+		let myBucket: string;
+		let myScope: string;
+		let myCollection: string;
 
-		// Iterates over all input items and add the key "myString" with the
-		// value the parameter "myString" resolves to.
-		// (This could be a different value for each item in case it contains an expression)
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
-				myString = this.getNodeParameter('myString', itemIndex, '') as string;
-				item = items[itemIndex];
+				myNewValue = this.getNodeParameter('myValue', itemIndex, '') as string;
+				myDocument = this.getNodeParameter('myDocument', itemIndex, '') as string;
 
-				item.json['myString'] = myString;
+				myUsername = this.getNodeParameter('myUsername', itemIndex, '') as string;
+				myPassword = this.getNodeParameter('myPassword', itemIndex, '') as string;
+				myBucket = this.getNodeParameter('myBucket', itemIndex, '') as string;
+				myScope = this.getNodeParameter('myScope', itemIndex, '') as string;
+				myCollection = this.getNodeParameter('myCollection', itemIndex, '') as string;
+
+				const clusterConnStr = "couchbase://127.0.0.1/?connectionTimeout=1200";
+				const username = myUsername
+				const password = myPassword
+				const bucketName = myBucket
+
+				const cluster = await connect(clusterConnStr, {
+					username: username,
+					password: password,
+				  })
+		  
+			  
+				  const bucket: Bucket = cluster.bucket(bucketName)
+			  
+				  const collection: Collection = bucket
+				  .scope(myScope)
+				  .collection(myCollection)
+
+
+				item = items[itemIndex];
+				item.json['myDocument'] = myDocument;
+
+
+				const operation = this.getNodeParameter('operation', 0);
+
+				if (operation === 'insert') {
+
+					await collection.insert(myDocument, item.json)
+
+				}else if (operation === 'update'){
+
+					item2 = items[itemIndex];
+					item2.json['myDocument'] = myNewValue;
+
+					await collection.upsert(myDocument, item2.json)
+
+				}else if (operation === 'remove'){
+
+
+					await collection.remove(myDocument)
+
+				}
+
+				
 			} catch (error) {
 				// This node should never fail but we want to showcase how
 				// to handle errors.
