@@ -12,14 +12,14 @@ import {
     connect,
   } from 'couchbase'
 
-export class ExampleNode implements INodeType {
+export class CouchbaseNode implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Couchbase',
 		name: 'couchbaseDB',
 		icon: 'file:CBLogomark.svg',
 		group: ['transform'],
 		version: 1,
-		description: 'Basic Example Node',
+		description: 'Couchbase Node to add, update and delete data from couchbase',
 		defaults: {
 			name: 'Couchbase',
 		},
