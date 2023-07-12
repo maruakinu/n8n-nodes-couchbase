@@ -10,6 +10,7 @@ import {
     Bucket,
     Collection,
     connect,
+	GetResult,
   } from 'couchbase'
 
 export class CouchbaseNode implements INodeType {
@@ -50,6 +51,12 @@ export class CouchbaseNode implements INodeType {
 						description: 'Remove document in couchbase',
 						action: 'Remove document in couchbase',
 					},
+					{
+						name: 'Find',
+						value: 'find',
+						description: 'Find document in couchbase',
+						action: 'Find document in couchbase',
+					},
                 ],
                 default: 'insert',
             },
@@ -63,7 +70,7 @@ export class CouchbaseNode implements INodeType {
 				type: 'string',
 				displayOptions: {
 					show: {
-						operation: ['insert', 'update', 'remove'],
+						operation: ['insert', 'update', 'remove', 'find'],
 					},
 				},
 				default: '',
@@ -77,7 +84,7 @@ export class CouchbaseNode implements INodeType {
 				type: 'string',
 				displayOptions: {
 					show: {
-						operation: ['insert', 'update', 'remove'],
+						operation: ['insert', 'update', 'remove', 'find'],
 					},
 				},
 				default: '',
@@ -91,7 +98,7 @@ export class CouchbaseNode implements INodeType {
 				type: 'string',
 				displayOptions: {
 					show: {
-						operation: ['insert', 'update', 'remove'],
+						operation: ['insert', 'update', 'remove', 'find'],
 					},
 				},
 				default: '',
@@ -105,7 +112,7 @@ export class CouchbaseNode implements INodeType {
 				type: 'string',
 				displayOptions: {
 					show: {
-						operation: ['insert', 'update', 'remove'],
+						operation: ['insert', 'update', 'remove', 'find'],
 					},
 				},
 				default: '',
@@ -119,7 +126,7 @@ export class CouchbaseNode implements INodeType {
 				type: 'string',
 				displayOptions: {
 					show: {
-						operation: ['insert', 'update', 'remove'],
+						operation: ['insert', 'update', 'remove', 'find'],
 					},
 				},
 				default: '',
@@ -187,6 +194,23 @@ export class CouchbaseNode implements INodeType {
 				displayOptions: {
 					show: {
 						operation: ['remove'],
+					},
+				},
+				default: '',
+				placeholder: 'Placeholder value',
+				description: 'The description text',
+			},
+
+		    // ----------------------------------
+			//         find
+			// ----------------------------------
+			{
+				displayName: 'ID',
+				name: 'myDocument',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['find'],
 					},
 				},
 				default: '',
@@ -263,6 +287,12 @@ export class CouchbaseNode implements INodeType {
 
 
 					await collection.remove(myDocument)
+
+				}else if (operation === 'find'){
+
+					const getResult: GetResult = await collection.get(myDocument)
+					console.log('Get Result:', getResult)
+					await collection.get(myDocument)
 
 				}
 
