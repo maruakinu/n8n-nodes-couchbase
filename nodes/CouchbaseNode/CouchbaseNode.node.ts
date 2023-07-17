@@ -65,6 +65,20 @@ export class CouchbaseNode implements INodeType {
 			//         credentials
 			// ----------------------------------
 			{
+				displayName: 'Connection String',
+				name: 'myConnection',
+				type: 'string',
+				displayOptions: {
+					show: {
+						operation: ['insert', 'update', 'remove', 'find'],
+					},
+				},
+				default: '',
+				placeholder: 'Enter Connection String',
+				description: 'The description text',
+			},
+
+			{
 				displayName: 'Username',
 				name: 'myUsername',
 				type: 'string',
@@ -236,6 +250,7 @@ export class CouchbaseNode implements INodeType {
 		let myBucket: string;
 		let myScope: string;
 		let myCollection: string;
+		let myConnection: string;
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 			try {
@@ -247,8 +262,9 @@ export class CouchbaseNode implements INodeType {
 				myBucket = this.getNodeParameter('myBucket', itemIndex, '') as string;
 				myScope = this.getNodeParameter('myScope', itemIndex, '') as string;
 				myCollection = this.getNodeParameter('myCollection', itemIndex, '') as string;
+				myConnection = this.getNodeParameter('myConnection', itemIndex, '') as string;
 
-				const clusterConnStr = "couchbase://127.0.0.1/?connectionTimeout=1200";
+				const clusterConnStr = myConnection;
 				const username = myUsername
 				const password = myPassword
 				const bucketName = myBucket
@@ -256,6 +272,7 @@ export class CouchbaseNode implements INodeType {
 				const cluster = await connect(clusterConnStr, {
 					username: username,
 					password: password,
+					configProfile: 'wanDevelopment'
 				  })
 		  
 			  
