@@ -13,7 +13,7 @@ import {
 	GetResult,
   } from 'couchbase'
 
-export class CouchbaseNode implements INodeType {
+export class CouchbaseDB implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Couchbase',
 		name: 'couchbaseDB',

@@ -1,19 +1,19 @@
 {
   "name": "n8n-nodes-couchbase-nodes",
   "version": "0.1.0",
-  "description": "",
+  "description": "N8N Node to add, get, update and delete data to couchbase",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
   "homepage": "",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "marloaquino",
+    "email": "marloauino080621@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "https://github.com/maruakinu/n8n-nodes-couchbase.git"
   },
   "main": "index.js",
   "scripts": {
@@ -33,7 +33,7 @@
       "dist/credentials/CouchbaseCredentialsApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/CouchbaseNode/CouchbaseNode.node.js"
+      "dist/nodes/CouchbaseNode/CouchbaseDB.node.js"
     ]
   },
   "devDependencies": {
