@@ -1,4 +1,4 @@
-![image](https://github.com/maruakinu/n8n-nodes-couchbase/assets/100325935/f38d50d0-a742-4d22-abc4-41834e473512)N8N Nodes Couchbase
+N8N Nodes Couchbase
 
 The Couchbase node allows you to automate documents in Couchbase. n8n has built-in support for a wide range of Couchbase features, including executing, inserting, updating, removing, and finding documents. n8n is a free and source-available workflow automation platform.
 
