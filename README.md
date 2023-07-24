@@ -12,4 +12,33 @@ To install a community node in your n8n instance :
 	 
 For more information on installing community nodes, visit the Community nodes docs page.
 
+Features
+
+			•	Insert documents
+			•	Update documents
+			•	Find documents
+			•	Remove documents
+	 
+Couchbase Credentials
+
+Create a Couchbase account and you will need to input the following: 
+
+			•	Connection String
+
+					1.	Couchbase Server, you can use this connection string couchbase://127.0.0.1/?connectionTimeout=1200
+					
+					2.	Couchbase Capella, you can navigate to the tab named Connect and copy the connection string.
+
+			•	Username
+			•	Password
+			•	Bucket
+			•	Scope 
+			•	Collection 
+
+Those credentials are needed in order for you to connect to Couchbase.
+
+
+
+
+
 
