@@ -25,9 +25,9 @@ Create a Couchbase account and you will need to input the following:
 
 			•	Connection String
 
-					1.	Couchbase Server, you can use this connection string couchbase://127.0.0.1/?connectionTimeout=1200
+				1.	Couchbase Server, you can use this connection string couchbase://127.0.0.1/?connectionTimeout=1200
 					
-					2.	Couchbase Capella, you can navigate to the tab named Connect and copy the connection string.
+				2.	Couchbase Capella, you can navigate to the tab named Connect and copy the connection string.
 
 			•	Username
 			•	Password
@@ -36,6 +36,15 @@ Create a Couchbase account and you will need to input the following:
 			•	Collection 
 
 Those credentials are needed in order for you to connect to Couchbase.
+
+Example Usage
+
+This workflow allows you to insert a document into a Couchbase. This example usage workflow would use the following three nodes. - Start - Set - Couchbase 
+
+The final workflow should look like the following image.
+
+
+<img width="468" alt="image" src="https://github.com/maruakinu/n8n-nodes-couchbase/assets/100325935/b7947dde-af19-4b40-9c85-b1c5716fa332">
 
 
 
