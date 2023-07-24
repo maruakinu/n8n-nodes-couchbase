@@ -5,9 +5,9 @@ The Couchbase node allows you to automate documents in Couchbase. n8n has built-
 Use this connector
 
 To install a community node in your n8n instance :
-		•	Go to Settings > Community Nodes :
-		•	Select 'Install a community node'
-		•	Type in "n8n-nodes-couchbase" and hit Install
+			•	Go to Settings > Community Nodes :
+			•	Select 'Install a community node'
+			•	Type in "n8n-nodes-couchbase" and hit Install
 For more information on installing community nodes, visit the Community nodes docs page.
 
 
