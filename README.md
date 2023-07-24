@@ -1,4 +1,4 @@
-N8N Nodes Couchbase
+![image](https://github.com/maruakinu/n8n-nodes-couchbase/assets/100325935/f38d50d0-a742-4d22-abc4-41834e473512)N8N Nodes Couchbase
 
 The Couchbase node allows you to automate documents in Couchbase. n8n has built-in support for a wide range of Couchbase features, including executing, inserting, updating, removing, and finding documents. n8n is a free and source-available workflow automation platform.
 
@@ -45,6 +45,27 @@ The final workflow should look like the following image.
 
 
 <img width="468" alt="image" src="https://github.com/maruakinu/n8n-nodes-couchbase/assets/100325935/b7947dde-af19-4b40-9c85-b1c5716fa332">
+
+1. Start node
+The start node exists by default when you create a new workflow.
+
+2. Set node
+   
+			1.	Click on the Add Value button and select 'String' from the dropdown list.
+			2.	Enter the Property Name of the Value in the Name field.
+			3.	Enter the value for the name in the Value field.
+			4.	Click on Execute Node to run the node.
+
+3. Couchbase node  (Inserting Data)
+   
+			1.	Select 'Insert' from the Operation dropdown list.
+			2.	You will have to enter credentials for the Couchbase. Click the Couchbase Node and enter your credentials.
+			3.	At the bottom, enter the value that you want to insert in Couchbase.
+			4.	Click on Execute Node to run the node.
+
+
+
+
 
 
 
