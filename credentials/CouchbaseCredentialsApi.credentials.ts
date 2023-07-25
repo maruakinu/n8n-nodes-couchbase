@@ -1,56 +1,60 @@
 import {
-	IAuthenticateGeneric,
-	ICredentialTestRequest,
 	ICredentialType,
 	INodeProperties,
 } from 'n8n-workflow';
 
 export class CouchbaseCredentialsApi implements ICredentialType {
-	name = 'exampleCredentialsApi';
-	displayName = 'Example Credentials API';
+	name = 'CouchbaseApi';
+	displayName = 'Couchbase Credentials';
+	documentationUrl = 'https://github.com/maruakinu/n8n-nodes-couchbase.git';
 	properties: INodeProperties[] = [
-		// The credentials to get from user and save encrypted.
-		// Properties can be defined exactly in the same way
-		// as node properties.
 		{
-			displayName: 'User Name',
-			name: 'username',
+			displayName: 'Connection String',
+			name: 'MyConnection',
+			type: 'string',
+			default: '',
+		},
+		{
+			displayName: 'Username',
+			name: 'MyUsername',
 			type: 'string',
 			default: '',
 		},
 		{
 			displayName: 'Password',
-			name: 'password',
+			name: 'MyPassword',
 			type: 'string',
-			typeOptions: {
-				password: true,
-			},
+			// typeOptions: {
+			// 	password: true,
+			// },
+			default: '',
+		},
+		{
+			displayName: 'Bucket',
+			name: 'MyBucket',
+			type: 'string',
+			default: '',
+		},
+		{
+			displayName: 'Scope',
+			name: 'MyScope',
+			type: 'string',
+			default: '',
+		},
+		{
+			displayName: 'Collection',
+			name: 'MyCollection',
+			type: 'string',
 			default: '',
 		},
 	];
 
-	// This credential is currently not used by any node directly
-	// but the HTTP Request node can use it to make requests.
-	// The credential is also testable due to the `test` property below
-	authenticate: IAuthenticateGeneric = {
-		type: 'generic',
-		properties: {
-			auth: {
-				username: '={{ $credentials.username }}',
-				password: '={{ $credentials.password }}',
-			},
-			qs: {
-				// Send this as part of the query string
-				n8n: 'rocks',
-			},
-		},
-	};
-
-	// The block below tells how this credential can be tested
-	test: ICredentialTestRequest = {
-		request: {
-			baseURL: 'https://example.com/',
-			url: '',
-		},
-	};
+	// static myConnection = 'couchbase://127.0.0.1/?connectionTimeout=1200';
+	// static myUsername = 'Administrator';
+	// static myPassword = '123456';
+	// static myBucket = 'n8n-sample';
+	// static myScope = 'n8n';
+	// static myCollection = 'users';
 }
+
+

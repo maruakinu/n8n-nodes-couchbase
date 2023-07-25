@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-couchbase",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "N8N Node to add, get, update and delete data to couchbase",
   "keywords": [
     "n8n-community-node-package"
@@ -33,7 +33,7 @@
       "dist/credentials/CouchbaseCredentialsApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/CouchbaseNode/CouchbaseDB.node.js"
+      "dist/nodes/CouchbaseDB/CouchbaseDB.node.js"
     ]
   },
   "devDependencies": {
