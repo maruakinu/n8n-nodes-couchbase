@@ -68,94 +68,6 @@ export class CouchbaseDB implements INodeType {
             },
 
 			// ----------------------------------
-			//         credentials
-			// ----------------------------------
-			// {
-			// 	displayName: 'Connection String',
-			// 	name: 'myConnection',
-			// 	type: 'string',
-			// 	displayOptions: {
-			// 		show: {
-			// 			operation: ['insert', 'update', 'remove', 'find'],
-			// 		},
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Enter Connection String',
-			// 	description: 'The description text',
-			// },
-
-			// {
-			// 	displayName: 'Username',
-			// 	name: 'myUsername',
-			// 	type: 'string',
-			// 	displayOptions: {
-			// 		show: {
-			// 			operation: ['insert', 'update', 'remove', 'find'],
-			// 		},
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Enter Your Username',
-			// 	description: 'The description text',
-			// },
-
-			// {
-			// 	displayName: 'Password',
-			// 	name: 'myPassword',
-			// 	type: 'string',
-			// 	displayOptions: {
-			// 		show: {
-			// 			operation: ['insert', 'update', 'remove', 'find'],
-			// 		},
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Enter Your Password',
-			// 	description: 'The description text',
-			// },
-
-			// {
-			// 	displayName: 'Bucket',
-			// 	name: 'myBucket',
-			// 	type: 'string',
-			// 	displayOptions: {
-			// 		show: {
-			// 			operation: ['insert', 'update', 'remove', 'find'],
-			// 		},
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Enter Bucket Name',
-			// 	description: 'The description text',
-			// },
-
-			// {
-			// 	displayName: 'Scope',
-			// 	name: 'myScope',
-			// 	type: 'string',
-			// 	displayOptions: {
-			// 		show: {
-			// 			operation: ['insert', 'update', 'remove', 'find'],
-			// 		},
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Enter Scope Name',
-			// 	description: 'The description text',
-			// },
-
-			// {
-			// 	displayName: 'Colection',
-			// 	name: 'myCollection',
-			// 	type: 'string',
-			// 	displayOptions: {
-			// 		show: {
-			// 			operation: ['insert', 'update', 'remove', 'find'],
-			// 		},
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Enter Collection Name',
-			// 	description: 'The description text',
-			// },
-
-
-			// ----------------------------------
 			//         insert
 			// ----------------------------------
 			{
@@ -208,7 +120,7 @@ export class CouchbaseDB implements INodeType {
 			//         delete
 			// ----------------------------------
 			{
-				displayName: 'ID',
+				displayName: 'Document ID',
 				name: 'myDocument',
 				type: 'string',
 				displayOptions: {
@@ -259,27 +171,18 @@ export class CouchbaseDB implements INodeType {
 
 		let item: INodeExecutionData;
 		let item2: INodeExecutionData;
+		let item3: INodeExecutionData;
+	    let item4: INodeExecutionData;
 		let myDocument: string;
 		let myNewValue: string;
-		// let myUsername: string;
-		// let myPassword: string;
-		// let myBucket: string;
-		// let myScope: string;
-		// let myCollection: string;
-		// let myConnection: string;
+		let readJson: string;
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 
 			try {
 				myNewValue = this.getNodeParameter('myValue', itemIndex, '') as string;
 				myDocument = this.getNodeParameter('myDocument', itemIndex, '') as string;
-
-			//	myUsername = this.getNodeParameter('myUsername', itemIndex, '') as string;
-			//	myPassword = this.getNodeParameter('myPassword', itemIndex, '') as string;
-			//	myBucket = this.getNodeParameter('myBucket', itemIndex, '') as string;
-			//	myScope = this.getNodeParameter('myScope', itemIndex, '') as string;
-			//	myCollection = this.getNodeParameter('myCollection', itemIndex, '') as string;
-			//	myConnection = this.getNodeParameter('myConnection', itemIndex, '') as string;
+			
 
 				const clusterConnStr = myConnection;
 				const username = myUsername;
@@ -299,14 +202,12 @@ export class CouchbaseDB implements INodeType {
 				  .scope(myScope)
 				  .collection(myCollection)
 
-
-				item = items[itemIndex];
-				item.json['myDocument'] = myDocument;
-
-
 				const operation = this.getNodeParameter('operation', 0);
 
 				if (operation === 'insert') {
+
+					item = items[itemIndex];
+					item.json['myDocument'] = myDocument;
 
 					await collection.insert(myDocument, item.json)
 
@@ -319,13 +220,21 @@ export class CouchbaseDB implements INodeType {
 
 				}else if (operation === 'remove'){
 
-
 					await collection.remove(myDocument)
 
 				}else if (operation === 'find'){
 
 					const getResult: GetResult = await collection.get(myDocument)
 					console.log('Get Result:', getResult)
+					readJson = JSON.stringify(getResult.content);
+					console.log('Get Result in String:', readJson)
+
+					item3 = items[itemIndex];
+					item3.json[''] = readJson;
+
+					item4 = items[itemIndex];
+					item4.json[' '];
+
 					await collection.get(myDocument)
 
 				}
