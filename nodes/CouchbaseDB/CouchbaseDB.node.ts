@@ -46,6 +46,12 @@ export class CouchbaseDB implements INodeType {
                         action: 'Create document in couchbase',
                     },
 					{
+						name: 'Read',
+						value: 'find',
+						description: 'Read document in couchbase',
+						action: 'Read document in couchbase',
+					},
+					{
 						name: 'Update',
 						value: 'update',
 						description: 'Update document in couchbase',
@@ -56,12 +62,6 @@ export class CouchbaseDB implements INodeType {
 						value: 'remove',
 						description: 'Delete document in couchbase',
 						action: 'Delete document in couchbase',
-					},
-					{
-						name: 'Read',
-						value: 'find',
-						description: 'Read document in couchbase',
-						action: 'Read document in couchbase',
 					},
                 ],
                 default: 'insert',
