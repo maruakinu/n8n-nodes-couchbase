@@ -16,7 +16,7 @@ import {
 export class CouchbaseDB implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Couchbase',
-		name: 'couchbaseDB',
+		name: 'couchbase',
 		icon: 'file:CBLogomark.svg',
 		group: ['transform'],
 		version: 1,
@@ -28,7 +28,7 @@ export class CouchbaseDB implements INodeType {
 		outputs: ['main'],
 		credentials: [
 			{
-				name: 'CouchbaseApi',
+				name: 'couchbaseApi',
 				required: false,
 			},
 		],

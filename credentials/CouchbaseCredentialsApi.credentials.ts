@@ -4,8 +4,8 @@ import {
 } from 'n8n-workflow';
 
 export class CouchbaseCredentialsApi implements ICredentialType {
-	name = 'CouchbaseApi';
-	displayName = 'Couchbase Credentials';
+	name = 'couchbaseApi';
+	displayName = 'Couchbase Credentials API';
 	documentationUrl = 'https://github.com/maruakinu/n8n-nodes-couchbase.git';
 	properties: INodeProperties[] = [
 		{
