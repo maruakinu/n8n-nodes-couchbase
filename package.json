@@ -1,6 +1,6 @@
 {
   "name": "n8n-nodes-couchbase",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "N8N Node to add, get, update and delete data to couchbase",
   "keywords": [
     "n8n-community-node-package"
