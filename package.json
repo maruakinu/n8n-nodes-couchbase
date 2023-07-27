@@ -33,7 +33,7 @@
       "dist/credentials/CouchbaseCredentialsApi.credentials.js"
     ],
     "nodes": [
-      "dist/nodes/CouchbaseDB/CouchbaseDB.node.js"
+      "dist/nodes/CouchbaseNode/CouchbaseNode.node.js"
     ]
   },
   "devDependencies": {

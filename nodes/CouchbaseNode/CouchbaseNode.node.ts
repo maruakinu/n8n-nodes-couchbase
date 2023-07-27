@@ -13,10 +13,10 @@ import {
 	GetResult,
   } from 'couchbase'
 
-export class CouchbaseDB implements INodeType {
+export class CouchbaseNode implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Couchbase',
-		name: 'couchbaseDB',
+		name: 'couchbaseNode',
 		icon: 'file:CBLogomark.svg',
 		group: ['transform'],
 		version: 1,
@@ -159,7 +159,7 @@ export class CouchbaseDB implements INodeType {
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 
-		const credentials = await this.getCredentials('CouchbaseApi');
+		const credentials = await this.getCredentials('couchbaseApi');
 		const myConnection = credentials.MyConnection as string;
 		const myUsername = credentials.MyUsername as string;
 		const myPassword = credentials.MyPassword as string;
