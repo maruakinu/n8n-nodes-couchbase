@@ -63,6 +63,12 @@ export class CouchbaseNode implements INodeType {
 						description: 'Delete document in couchbase',
 						action: 'Delete document in couchbase',
 					},
+					{
+						name: 'Import',
+						value: 'import',
+						description: 'Import document in couchbase',
+						action: 'Import document in couchbase',
+					},
                 ],
                 default: 'insert',
             },
@@ -103,7 +109,7 @@ export class CouchbaseNode implements INodeType {
 				description: 'The description text',
 			},
 			{
-				displayName: 'Value',
+				displayName: 'New Value',
 				name: 'myValue',
 				type: 'string',
 				displayOptions: {
@@ -150,6 +156,23 @@ export class CouchbaseNode implements INodeType {
 				description: 'The description text',
 			},
 
+					    // ----------------------------------
+			//         find
+			// ----------------------------------
+			{
+				displayName: 'Insert Json',
+				name: 'myDocument',
+				type: 'json',
+				displayOptions: {
+					show: {
+						operation: [''],
+					},
+				},
+				default: '',
+				placeholder: 'Placeholder value',
+				description: 'The description text',
+			},
+
 
 
 		],
@@ -178,6 +201,9 @@ export class CouchbaseNode implements INodeType {
 		let readJson: string;
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
+
+			const uuid = require("uuid");
+			const id = uuid.v4();
 
 			try {
 				myNewValue = this.getNodeParameter('myValue', itemIndex, '') as string;
@@ -209,7 +235,7 @@ export class CouchbaseNode implements INodeType {
 					item = items[itemIndex];
 					item.json['myDocument'] = myDocument;
 
-					await collection.insert(myDocument, item.json)
+					await collection.insert(id, item.json)
 
 				}else if (operation === 'update'){
 
@@ -236,6 +262,13 @@ export class CouchbaseNode implements INodeType {
 					item4.json[' '];
 
 					await collection.get(myDocument)
+
+				}else if (operation === 'import') {
+
+					item = items[itemIndex];
+					
+
+					await collection.insert(id, item)
 
 				}
 
