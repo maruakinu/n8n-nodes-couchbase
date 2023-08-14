@@ -46,18 +46,6 @@ export class CouchbaseNode implements INodeType {
                         action: 'Create document in couchbase',
                     },
 					{
-						name: 'Read',
-						value: 'find',
-						description: 'Read document in couchbase',
-						action: 'Read document in couchbase',
-					},
-					{
-						name: 'Update',
-						value: 'update',
-						description: 'Update document in couchbase',
-						action: 'Update document in couchbase',
-					},
-					{
 						name: 'Delete',
 						value: 'remove',
 						description: 'Delete document in couchbase',
@@ -68,6 +56,18 @@ export class CouchbaseNode implements INodeType {
 						value: 'import',
 						description: 'Import document in couchbase',
 						action: 'Import document in couchbase',
+					},
+					{
+						name: 'Read',
+						value: 'find',
+						description: 'Read document in couchbase',
+						action: 'Read document in couchbase',
+					},
+					{
+						name: 'Update',
+						value: 'update',
+						description: 'Update document in couchbase',
+						action: 'Update document in couchbase',
 					},
                 ],
                 default: 'insert',
