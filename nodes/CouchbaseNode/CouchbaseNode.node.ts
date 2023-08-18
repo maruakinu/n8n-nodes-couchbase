@@ -11,6 +11,7 @@ import {
     Collection,
     connect,
 	GetResult,
+	QueryResult,
   } from 'couchbase'
 
 export class CouchbaseNode implements INodeType {
@@ -62,6 +63,12 @@ export class CouchbaseNode implements INodeType {
 						value: 'find',
 						description: 'Read document in couchbase',
 						action: 'Read document in couchbase',
+					},
+					{
+						name: 'Query',
+						value: 'query',
+						description: 'Query document in couchbase',
+						action: 'Query document in couchbase',
 					},
 					{
 						name: 'Update',
@@ -156,21 +163,25 @@ export class CouchbaseNode implements INodeType {
 				description: 'The description text',
 			},
 
-					    // ----------------------------------
-			//         find
+
+			// ----------------------------------
+			//         query
 			// ----------------------------------
 			{
-				displayName: 'Insert Json',
-				name: 'myDocument',
-				type: 'json',
+				displayName: 'Run Query',
+				name: 'query',
+				type: 'string',
 				displayOptions: {
 					show: {
-						operation: [''],
+						operation: ['query'],
 					},
 				},
+				typeOptions: {
+					rows: 5,
+				},
 				default: '',
-				placeholder: 'Placeholder value',
-				description: 'The description text',
+				placeholder: 'e.g. SELECT * FROM users WHERE name="Michael"',
+				description: 'the N1QL query to execute',
 			},
 
 
@@ -196,8 +207,10 @@ export class CouchbaseNode implements INodeType {
 		let item2: INodeExecutionData;
 		let item3: INodeExecutionData;
 	    let item4: INodeExecutionData;
+		let item5: INodeExecutionData;
 		let myDocument: string;
 		let myNewValue: string;
+		let myNewQuery: string;
 		let readJson: string;
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
@@ -206,6 +219,7 @@ export class CouchbaseNode implements INodeType {
 			const id = uuid.v4();
 
 			try {
+				myNewQuery = this.getNodeParameter('query', itemIndex, '') as string;
 				myNewValue = this.getNodeParameter('myValue', itemIndex, '') as string;
 				myDocument = this.getNodeParameter('myDocument', itemIndex, '') as string;
 			
@@ -266,9 +280,34 @@ export class CouchbaseNode implements INodeType {
 				}else if (operation === 'import') {
 
 					item = items[itemIndex];
-					
 
 					await collection.insert(id, item)
+
+				}else if (operation === 'query') {
+
+					// const options = this.getNodeParameter('options', 0);
+					// let limit = options.limit as number;
+					
+
+					// Perform a N1QL Query
+					const queryResult: QueryResult = await bucket
+					.scope(myScope)
+					.query(myNewQuery)
+					// .query(myNewQuery + ' LIMIT ' + limit)
+
+					console.log('Query Results:')
+					queryResult.rows.forEach((row) => {
+					console.log(row)
+					})
+
+					// Converting Json to String
+					readJson = JSON.stringify(queryResult.rows);
+					console.log('Get Result in String:', readJson)
+
+					// This will be the output on the n8n interface
+					item5 = items[itemIndex];
+					item5.json[''] = queryResult.rows;
+
 
 				}
 
