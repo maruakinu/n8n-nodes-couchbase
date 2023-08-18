@@ -59,16 +59,16 @@ export class CouchbaseNode implements INodeType {
 						action: 'Import document in couchbase',
 					},
 					{
-						name: 'Read',
-						value: 'find',
-						description: 'Read document in couchbase',
-						action: 'Read document in couchbase',
-					},
-					{
 						name: 'Query',
 						value: 'query',
 						description: 'Query document in couchbase',
 						action: 'Query document in couchbase',
+					},
+					{
+						name: 'Read',
+						value: 'find',
+						description: 'Read document in couchbase',
+						action: 'Read document in couchbase',
 					},
 					{
 						name: 'Update',
@@ -181,7 +181,7 @@ export class CouchbaseNode implements INodeType {
 				},
 				default: '',
 				placeholder: 'e.g. SELECT * FROM users WHERE name="Michael"',
-				description: 'the N1QL query to execute',
+				description: 'The N1QL query to execute',
 			},
 
 
