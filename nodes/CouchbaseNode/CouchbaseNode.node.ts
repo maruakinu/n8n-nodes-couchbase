@@ -83,6 +83,36 @@ export class CouchbaseNode implements INodeType {
 			// ----------------------------------
 			//         insert
 			// ----------------------------------
+		{
+			displayName: 'Options',
+			name: 'options',
+			type: 'collection',
+			displayOptions: {
+				show: {
+					operation: ['insert'],
+				},
+			},
+			default: {},
+			placeholder: 'Add options',
+			description: 'Add query options',
+			options: [
+				{
+					displayName: 'Specified Document ID',
+					name: 'specified',
+					type: 'string',
+					default: "",
+					description: 'Specified Document ID',
+				},
+				{
+					displayName: 'Generate Document ID',
+					name: 'generate',
+					type: 'boolean',
+					default: false,
+					description: 'Generate Document ID',
+				},
+				],
+			},
+			
 			{
 				displayName: 'Value',
 				name: 'myDocument',
@@ -206,7 +236,7 @@ export class CouchbaseNode implements INodeType {
 		let item: INodeExecutionData;
 		let item2: INodeExecutionData;
 		let item3: INodeExecutionData;
-	    let item4: INodeExecutionData;
+	    // let item4: INodeExecutionData;
 		let item5: INodeExecutionData;
 		let myDocument: string;
 		let myNewValue: string;
@@ -246,15 +276,30 @@ export class CouchbaseNode implements INodeType {
 
 				if (operation === 'insert') {
 
-					item = items[itemIndex];
-					item.json['myDocument'] = myDocument;
+					const options = this.getNodeParameter('options', 0);
+					const specified = options.specified as string;
+					const generate = options.generate as boolean;
 
-					await collection.insert(id, item.json)
+					if (generate == true){
+
+						item = items[itemIndex];
+						item.json['Document'] = myDocument;
+	
+						await collection.insert(id, item.json)
+					}else if (specified != "") {
+
+						item = items[itemIndex];
+						item.json['Document'] = myDocument;
+	
+						await collection.insert(specified, item.json)
+
+					}
+
 
 				}else if (operation === 'update'){
 
 					item2 = items[itemIndex];
-					item2.json['myDocument'] = myNewValue;
+					item2.json['Document'] = myNewValue;
 
 					await collection.upsert(myDocument, item2.json)
 
@@ -272,8 +317,8 @@ export class CouchbaseNode implements INodeType {
 					item3 = items[itemIndex];
 					item3.json[''] = readJson;
 
-					item4 = items[itemIndex];
-					item4.json[' '];
+					// item4 = items[itemIndex];
+					// item4.json[' '];
 
 					await collection.get(myDocument)
 
