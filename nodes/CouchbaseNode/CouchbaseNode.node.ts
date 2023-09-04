@@ -97,11 +97,11 @@ export class CouchbaseNode implements INodeType {
 			description: 'Add query options',
 			options: [
 				{
-					displayName: 'Specified Document ID',
+					displayName: 'Specify Document ID',
 					name: 'specified',
 					type: 'string',
 					default: "",
-					description: 'Specified Document ID',
+					description: 'Specify Document ID',
 				},
 				{
 					displayName: 'Generate Document ID',
@@ -306,6 +306,8 @@ export class CouchbaseNode implements INodeType {
 				}else if (operation === 'remove'){
 
 					await collection.remove(myDocument)
+					item = items[itemIndex];
+					item.json[''] = 'Document Deleted';
 
 				}else if (operation === 'find'){
 
@@ -314,13 +316,14 @@ export class CouchbaseNode implements INodeType {
 					readJson = JSON.stringify(getResult.content);
 					console.log('Get Result in String:', readJson)
 
+					// item3 = items[itemIndex];
+					// item3.json[''] = readJson;
+
+					// await collection.get(myDocument)
+
+					// This will be the output on the n8n interface
 					item3 = items[itemIndex];
-					item3.json[''] = readJson;
-
-					// item4 = items[itemIndex];
-					// item4.json[' '];
-
-					await collection.get(myDocument)
+					item3.json[''] = getResult.content;
 
 				}else if (operation === 'import') {
 
@@ -329,16 +332,12 @@ export class CouchbaseNode implements INodeType {
 					await collection.insert(id, item)
 
 				}else if (operation === 'query') {
-
-					// const options = this.getNodeParameter('options', 0);
-					// let limit = options.limit as number;
 					
 
 					// Perform a N1QL Query
 					const queryResult: QueryResult = await bucket
 					.scope(myScope)
 					.query(myNewQuery)
-					// .query(myNewQuery + ' LIMIT ' + limit)
 
 					console.log('Query Results:')
 					queryResult.rows.forEach((row) => {
