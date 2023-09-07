@@ -223,6 +223,8 @@ export class CouchbaseNode implements INodeType {
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 
+		// Couchbase Credentials
+
 		const credentials = await this.getCredentials('couchbaseApi');
 		const myConnection = credentials.MyConnection as string;
 		const myUsername = credentials.MyUsername as string;
@@ -236,7 +238,6 @@ export class CouchbaseNode implements INodeType {
 		let item: INodeExecutionData;
 		let item2: INodeExecutionData;
 		let item3: INodeExecutionData;
-	    // let item4: INodeExecutionData;
 		let item5: INodeExecutionData;
 		let myDocument: string;
 		let myNewValue: string;
@@ -245,10 +246,15 @@ export class CouchbaseNode implements INodeType {
 
 		for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
 
+			// Generating ID with UUID
+
 			const uuid = require("uuid");
 			const id = uuid.v4();
 
 			try {
+
+				// Getting the value of the input as string
+
 				myNewQuery = this.getNodeParameter('query', itemIndex, '') as string;
 				myNewValue = this.getNodeParameter('myValue', itemIndex, '') as string;
 				myDocument = this.getNodeParameter('myDocument', itemIndex, '') as string;
@@ -258,6 +264,8 @@ export class CouchbaseNode implements INodeType {
 				const username = myUsername;
 				const password = myPassword;
 				const bucketName = myBucket;
+
+				// Connecting to the database
 
 				const cluster = await connect(clusterConnStr, {
 					username: username,
@@ -272,13 +280,19 @@ export class CouchbaseNode implements INodeType {
 				  .scope(myScope)
 				  .collection(myCollection)
 
+				// Getting the value of operation input
+
 				const operation = this.getNodeParameter('operation', 0);
 
 				if (operation === 'insert') {
 
+					// Expressiong for getting the value in the input field
+
 					const options = this.getNodeParameter('options', 0);
 					const specified = options.specified as string;
 					const generate = options.generate as boolean;
+
+					// Statement either the user choose to generate or specify the ID
 
 					if (generate == true){
 
@@ -286,6 +300,7 @@ export class CouchbaseNode implements INodeType {
 						item.json['Document'] = myDocument;
 	
 						await collection.insert(id, item.json)
+
 					}else if (specified != "") {
 
 						item = items[itemIndex];
@@ -305,23 +320,23 @@ export class CouchbaseNode implements INodeType {
 
 				}else if (operation === 'remove'){
 
+					// Operation (remove) to delete a document in Couchbase
+
 					await collection.remove(myDocument)
 					item = items[itemIndex];
 					item.json[''] = 'Document Deleted';
 
 				}else if (operation === 'find'){
 
+					// Operation (get) to retrieve a document in Couchbase
+
 					const getResult: GetResult = await collection.get(myDocument)
 					console.log('Get Result:', getResult)
 					readJson = JSON.stringify(getResult.content);
 					console.log('Get Result in String:', readJson)
 
-					// item3 = items[itemIndex];
-					// item3.json[''] = readJson;
-
-					// await collection.get(myDocument)
-
 					// This will be the output on the n8n interface
+
 					item3 = items[itemIndex];
 					item3.json[''] = getResult.content;
 
@@ -335,6 +350,7 @@ export class CouchbaseNode implements INodeType {
 					
 
 					// Perform a N1QL Query
+
 					const queryResult: QueryResult = await bucket
 					.scope(myScope)
 					.query(myNewQuery)
@@ -345,10 +361,12 @@ export class CouchbaseNode implements INodeType {
 					})
 
 					// Converting Json to String
+
 					readJson = JSON.stringify(queryResult.rows);
 					console.log('Get Result in String:', readJson)
 
 					// This will be the output on the n8n interface
+
 					item5 = items[itemIndex];
 					item5.json[''] = queryResult.rows;
 
